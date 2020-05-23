@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -32,8 +33,8 @@ namespace TableTalk.Pages
 			var path = $"{URL}/questions";
 
 			var response = client.GetAsync(path);
-
-			QuestionsCount = int.Parse(response.Result.Content.ReadAsStringAsync().Result);
+			var questionsCount = response.Result.Content.ReadAsStringAsync().Result;
+			QuestionsCount = int.Parse(Regex.Replace(questionsCount, @"[\D-]", string.Empty));
 		}
 	}
 }
